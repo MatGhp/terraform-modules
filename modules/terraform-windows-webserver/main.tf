@@ -1,8 +1,17 @@
+module general_module {
+  source              = ".././general"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+}
+
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.vm_name}-vnet"
   address_space       = var.vnet_address_space
   location            = var.location
   resource_group_name = var.resource_group_name
+  depends_on = [
+    module.general_module
+  ]
 }
 
 resource "azurerm_subnet" "subnet" {
@@ -10,6 +19,9 @@ resource "azurerm_subnet" "subnet" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.subnet_address_prefix
+  depends_on = [
+    azurerm_virtual_network.vnet
+  ]
 }
 
 resource "azurerm_network_security_group" "nsg" {
@@ -64,9 +76,9 @@ resource "azurerm_windows_virtual_machine" "vm" {
   admin_password      = var.admin_password
   network_interface_ids = [azurerm_network_interface.vm_nic.id]
 
-  computer_name              = var.vm_name
-  provision_vm_agent         = true
-  enable_automatic_updates   = true
+  computer_name            = var.vm_name
+  provision_vm_agent       = true
+  enable_automatic_updates = true
 
   os_disk {
     caching              = "ReadWrite"

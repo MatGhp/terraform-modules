@@ -19,17 +19,6 @@ variable "client_secret" {
   sensitive   = true
 }
 
-variable "resource_group_name" {
-  description = "The name of the resource group in which to create the VM."
-  type        = string
-}
-
-variable "location" {
-  description = "The Azure region in which to create the VM."
-  type        = string
-  default     = "West Europe"
-}
-
 variable "vm_configurations" {
   description = "Configuration for each VM."
   type = map(object({

@@ -1,5 +1,3 @@
-resource_group_name = "multi-vm-resource-group"
-
 vm_configurations = {
   "vm1" = {
     vm_name        = "vm-west"

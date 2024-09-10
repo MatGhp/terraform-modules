@@ -16,9 +16,10 @@ provider "azurerm" {
   client_secret   = var.client_secret
 }
 
-resource "azurerm_resource_group" "main" {
-  name     = var.resource_group_name
-  location = var.location
+module "general_module" {
+  source="./modules/general"
+  resource_group_name= local.resource_group_name
+  location = local.location
 }
 
 module "vm" {
@@ -29,7 +30,7 @@ module "vm" {
   admin_password        = each.value.admin_password
   vm_size               = each.value.vm_size
   location              = each.value.location
-  resource_group_name   = azurerm_resource_group.main.name
+  resource_group_name   = local.resource_group_name
   vnet_address_space    = var.vnet_address_space
   subnet_address_prefix = var.subnet_address_prefix
   os_publisher          = var.os_publisher
