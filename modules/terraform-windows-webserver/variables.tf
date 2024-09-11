@@ -26,7 +26,7 @@ variable "vnet_address_space" {
 
 variable "subnet_address_prefix" {
   description = "Address prefix for the subnet."
-  type        = list(string)
+  type        = string
 }
 
 variable "os_publisher" {

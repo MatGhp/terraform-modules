@@ -22,26 +22,14 @@ variable "client_secret" {
 variable "vm_configurations" {
   description = "Configuration for each VM."
   type = map(object({
-    vm_name        = string
-    admin_username = string
-    admin_password = string
-    vm_size        = string
-    location       = string
+    vm_name               = string
+    admin_username        = string
+    admin_password        = string
+    vm_size               = string
+    vnet_address_space    = list(string)
+    subnet_address_prefix = string
   }))
   default = {}
-}
-
-
-variable "vnet_address_space" {
-  description = "The address space for the virtual network."
-  type        = list(string)
-  default     = ["10.0.0.0/16"]
-}
-
-variable "subnet_address_prefix" {
-  description = "The address prefix for the subnet."
-  type        = list(string)
-  default     = ["10.0.1.0/24"]
 }
 
 variable "os_publisher" {

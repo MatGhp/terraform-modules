@@ -18,7 +18,7 @@ resource "azurerm_subnet" "subnet" {
   name                 = "${var.vm_name}-subnet"
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = var.subnet_address_prefix
+  address_prefixes     = [var.subnet_address_prefix]
   depends_on = [
     azurerm_virtual_network.vnet
   ]
@@ -47,6 +47,13 @@ resource "azurerm_subnet_network_security_group_association" "subnet_nsg_associa
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
+resource "azurerm_public_ip" "vm_public_ip" {
+  name                = "${var.vm_name}-pip"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Dynamic"
+}
+
 resource "azurerm_network_interface" "vm_nic" {
   name                = "${var.vm_name}-nic"
   location            = var.location
@@ -58,13 +65,6 @@ resource "azurerm_network_interface" "vm_nic" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.vm_public_ip.id
   }
-}
-
-resource "azurerm_public_ip" "vm_public_ip" {
-  name                = "${var.vm_name}-pip"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  allocation_method   = "Dynamic"
 }
 
 resource "azurerm_windows_virtual_machine" "vm" {
