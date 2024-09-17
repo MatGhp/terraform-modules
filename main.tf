@@ -17,9 +17,9 @@ provider "azurerm" {
 }
 
 module "general_module" {
-  source="./modules/general"
-  resource_group_name= local.resource_group_name
-  location = local.location
+  source              = "./modules/general"
+  resource_group_name = local.resource_group_name
+  location            = local.location
 }
 
 module "vm" {
